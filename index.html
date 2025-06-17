@@ -877,7 +877,7 @@
             const queryLower = query.toLowerCase();
             
             // Parse status conditions
-            if (queryLower.includes('status:failed') || queryLower.includes('failed')) {
+            if (queryLower.includes('status:failed') || queryLower.includes('failed') || queryLower.includes('failures')) {
                 conditions.status = 'failed';
             } else if (queryLower.includes('status:success') || queryLower.includes('success')) {
                 conditions.status = 'success';
@@ -983,25 +983,39 @@
                 }
             }
 
-            // Handle simple date format
-            const simpleDateMatch = query.match(/@timestamp:=(\d{4}-\d{2}-\d{2})/i);
+            // Handle simple date format (support both US and ISO formats)
+            const simpleDateMatch = query.match(/@timestamp:=(\d{4}-\d{2}-\d{2})/i) || 
+                                   query.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/i) ||
+                                   query.match(/(\d{1,2})-(\d{1,2})-(\d{4})/i);
             if (simpleDateMatch) {
-                const date = new Date(simpleDateMatch[1] + 'T00:00:00Z');
+                let date;
+                if (simpleDateMatch[0].includes('@timestamp:=')) {
+                    // ISO format: YYYY-MM-DD
+                    date = new Date(simpleDateMatch[1] + 'T00:00:00Z');
+                } else {
+                    // US format: MM/DD/YYYY or MM-DD-YYYY
+                    const month = parseInt(simpleDateMatch[1]) - 1; // Month is 0-indexed
+                    const day = parseInt(simpleDateMatch[2]);
+                    const year = parseInt(simpleDateMatch[3]);
+                    date = new Date(Date.UTC(year, month, day, 0, 0, 0));
+                }
                 const endDate = new Date(date.getTime() + (24 * 60 * 60 * 1000));
                 return { start: date, end: endDate };
             }
 
             // Handle natural language
             if (queryLower.includes('today')) {
-                const today = new Date('2025-03-20T00:00:00Z');
-                const tomorrow = new Date('2025-03-21T00:00:00Z');
-                return { start: today, end: tomorrow };
+                // Current mock time is 2025-03-20T03:30:00Z, so today is March 20th
+                const todayStart = new Date('2025-03-20T00:00:00Z');
+                const todayEnd = new Date('2025-03-21T00:00:00Z');
+                return { start: todayStart, end: todayEnd };
             }
 
             if (queryLower.includes('yesterday')) {
-                const yesterday = new Date('2025-03-19T00:00:00Z');
-                const today = new Date('2025-03-20T00:00:00Z');
-                return { start: yesterday, end: today };
+                // Yesterday would be March 19th
+                const yesterdayStart = new Date('2025-03-19T00:00:00Z');
+                const yesterdayEnd = new Date('2025-03-20T00:00:00Z');
+                return { start: yesterdayStart, end: yesterdayEnd };
             }
 
             if (queryLower.includes('last 24 hours')) {
@@ -1075,7 +1089,7 @@
                         if (start && deployTime < start) {
                             return false;
                         }
-                        if (end && deployTime > end) {
+                        if (end && deployTime >= end) {
                             return false;
                         }
                     }
@@ -1238,12 +1252,22 @@
             searchSuggestionsEl.style.display = 'none';
         }
 
-        // Filter functionality
+        // Filter functionality (enhanced to allow deselecting)
         document.querySelectorAll('.filter-button').forEach(button => {
             button.addEventListener('click', () => {
-                document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('active'));
-                button.classList.add('active');
-                currentFilter = button.dataset.filter;
+                const filterType = button.dataset.filter;
+                
+                // If clicking the currently active filter, deselect it
+                if (button.classList.contains('active')) {
+                    button.classList.remove('active');
+                    currentFilter = 'all';
+                } else {
+                    // Deselect all other filters and select this one
+                    document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('active'));
+                    button.classList.add('active');
+                    currentFilter = filterType;
+                }
+                
                 renderDeployments();
             });
         });
