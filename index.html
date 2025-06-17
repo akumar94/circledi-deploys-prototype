@@ -1,1270 +1,1254 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CircleCI Deploys</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #1a1a1a;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .badge {
+            background: #22c55e;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e9ecef;
+            padding: 24px;
+        }
+
+        .sidebar h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 16px;
+        }
+
+        .sidebar-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-item:hover {
+            background: #f3f4f6;
+        }
+
+        .sidebar-item.active {
+            background: #e5e7eb;
+            font-weight: 500;
+        }
+
+        .content {
+            flex: 1;
+            padding: 24px;
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .tab {
+            padding: 12px 0;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+
+        .tab .indicator {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-left: 8px;
+            display: inline-block;
+        }
+
+        .search-container {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+
+        .search-suggestion {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .search-suggestion:hover {
+            background: #f3f4f6;
+        }
+
+        .search-suggestion:last-child {
+            border-bottom: none;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-button {
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .filter-button:hover {
+            border-color: #9ca3af;
+        }
+
+        .filter-button.active {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        .filter-button.active.running {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .filter-button.active.production {
+            background: #f59e0b;
+            border-color: #f59e0b;
+        }
+
+        .filter-button.active.recent {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+
+        .deploy-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .deploy-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .deploy-item:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .deploy-item.failed {
+            border-left: 4px solid #ef4444;
+        }
+
+        .deploy-item.success {
+            border-left: 4px solid #22c55e;
+        }
+
+        .deploy-item.running {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .deploy-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .deploy-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .deploy-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .deploy-version {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .deploy-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.failed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.running {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .deploy-time {
+            color: #6b7280;
+            font-size: 14px;
+            margin-left: 12px;
+        }
+
+        .commit-message-header {
+            font-size: 14px;
+            color: #374151;
+            margin: 12px 0 8px 0;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .commit-message {
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .deploy-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-icon.success {
+            background: #22c55e;
+        }
+
+        .status-icon.failed {
+            background: #ef4444;
+        }
+
+        .status-icon.running {
+            background: #3b82f6;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .deploy-actions {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .deploy-item:hover .deploy-actions {
+            opacity: 1;
+        }
+
+        .action-button {
+            padding: 4px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        .action-button:hover {
+            background: #f3f4f6;
+        }
+
+        .pipeline-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .pipeline-link:hover {
+            text-decoration: underline;
+        }
+
+        .environment-tag {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .environment-tag.production {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .arrow {
+            color: #9ca3af;
+            margin: 0 8px;
+            font-weight: normal;
+        }
+
+        .refresh-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #6b7280;
+            margin-left: 8px;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .refresh-button:hover {
+            background: #f3f4f6;
+        }
+
+        .deploy-timestamp {
+            color: #6b7280;
+            font-size: 13px;
+            margin-left: 8px;
+        }
+    </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;CircleCI Deploys&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>* {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #f8f9fa;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #1a1a1a;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid #e9ecef;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 16px 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.logo {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 18px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.logo-icon {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #1a1a1a;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.badge {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #22c55e;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 2px 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 4px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 11px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.main-content {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>min-height: calc(100vh - 70px);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sidebar {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 280px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-right: 1px solid #e9ecef;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sidebar h3 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sidebar-item {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 4px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sidebar-item:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #f3f4f6;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sidebar-item.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #e5e7eb;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.content {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.page-header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.page-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tabs {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid #e9ecef;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 2px solid transparent;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #2563eb;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom-color: #2563eb;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab .indicator {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #22c55e;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-left: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-input {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 16px 12px 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #d1d5db;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-input:focus {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>outline: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #2563eb;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-icon {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-50%);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-suggestions {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>right: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #d1d5db;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-top: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 0 0 8px 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-height: 200px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow-y: auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 10;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-suggestion {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid #f3f4f6;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-suggestion:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #f3f4f6;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-suggestion:last-child {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: none;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filters {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-wrap: wrap;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-button {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #d1d5db;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.2s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-button:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #9ca3af;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-button.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #ef4444;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #ef4444;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-button.active.running {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #3b82f6;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #3b82f6;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-button.active.production {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #f59e0b;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #f59e0b;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-button.active.recent {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #8b5cf6;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #8b5cf6;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-list {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-item {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #e5e7eb;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.2s;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-item:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #d1d5db;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-item.failed {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 4px solid #ef4444;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-item.success {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 4px solid #22c55e;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-item.running {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 4px solid #3b82f6;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-name {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-version {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-status {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.status-badge {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 4px 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 4px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.status-badge.success {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #dcfce7;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #166534;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.status-badge.failed {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #fee2e2;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #991b1b;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.status-badge.running {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #dbeafe;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #1e40af;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-time {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-left: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.commit-message-header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #374151;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 12px 0 8px 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.4;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.commit-message {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #374151;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.4;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-meta {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 13px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.meta-item {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 4px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.status-icon {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.status-icon.success {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #22c55e;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.status-icon.failed {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #ef4444;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.status-icon.running {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #3b82f6;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: pulse 2s infinite;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes pulse {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>0%, 100% { opacity: 1; }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>50% { opacity: 0.5; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-actions {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>right: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.2s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-item:hover .deploy-actions {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.action-button {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 4px 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #d1d5db;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 4px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-left: 4px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.action-button:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #f3f4f6;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.pipeline-link {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #2563eb;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.pipeline-link:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-decoration: underline;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.environment-tag {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #f3f4f6;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #374151;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 2px 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 3px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 11px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.environment-tag.production {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #fef3c7;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #92400e;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.arrow {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #9ca3af;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: normal;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.refresh-button {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-left: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.refresh-button:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #f3f4f6;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.deploy-timestamp {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 13px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-left: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="logo"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="logo-icon"&gt;◉&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>circleci</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="badge"&gt;OPERATIONAL&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="display: flex; align-items: center; gap: 16px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;🔔&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;❓&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;👤&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="main-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sidebar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3&gt;Acme Co.&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="sidebar-item"&gt;🏠 Organization Home&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="sidebar-item"&gt;🔄 Pipelines&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="sidebar-item"&gt;📁 Projects&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="sidebar-item active"&gt;🚀 Deploys&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="sidebar-item"&gt;📊 Insights&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="sidebar-item"&gt;🔧 Resources&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="sidebar-item"&gt;⚙️ Settings&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="page-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h1 class="page-title"&gt;Deploys&lt;/h1&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="tabs"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="tab active" data-tab="timeline"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>TIMELINE</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="indicator"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="tab" data-tab="environments"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>ENVIRONMENTS</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span style="color: #ef4444; font-size: 12px; margin-left: 8px;"&gt;🔴🟢&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="tab" data-tab="components"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>COMPONENTS</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span style="color: #ef4444; font-size: 12px; margin-left: 8px;"&gt;2 failing&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="search-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="search-icon"&gt;🔍&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>type="text"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>class="search-input"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>placeholder="Try: 'failed between 03:00 and 03:40', 'author:fozzie last 24 hours', 'production failures today', '@timestamp:&gt;2025-03-20T03:00:00Z'"</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>id="searchInput"</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>autocomplete="off"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="search-suggestions" id="searchSuggestions"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="filters"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="filter-button" data-filter="failures"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>🚨 Show Failures</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="filter-button running" data-filter="running"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>🔄 Currently Running</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="filter-button production" data-filter="production"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>🏭 Production Only</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="filter-button recent" data-filter="recent"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>🕐 Recent Activity</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="deploy-list" id="deployList"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Deploy items will be populated by JavaScript --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Mock data with 20 diverse entries covering all filter criteria</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const deployData = [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 1,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "user-authentication-service",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v2.1.4-a8f9e2d",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "failed",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-a",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:24:12",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "2m 45s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Fix OAuth2 token refresh vulnerability in user sessions",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "sarah.chen",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "security-patches / default pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "hotfix/oauth-security",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "security", "critical"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 2,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "payment-processing-engine",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v1.8.7-d4c2b91",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "running",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-a",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:22:08",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "1m 30s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Implement PCI DSS compliance for credit card processing",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "mike.rodriguez",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "payment-service / default pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/pci-compliance",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "payment", "running"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 3,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "api-gateway-proxy",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v3.2.1-f7e8a44",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "success",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-b",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:20:33",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "3m 12s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Add rate limiting and DDoS protection middleware",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "alex.kumar",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "gateway-service / production pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "main",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "security", "success"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 4,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "notification-dispatcher",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v1.5.2-b9c3e77",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "failed",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-staging",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:18:45",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "1m 55s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Fix email template rendering for multi-language support",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "emma.johnson",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "notifications / staging pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "bugfix/template-rendering",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["staging", "notification", "failed"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 5,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "data-analytics-processor",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v4.1.0-c5d8f22",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "running",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-a",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:16:22",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "4m 20s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Optimize ETL pipeline for real-time analytics dashboard",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "david.park",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "analytics / etl pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/realtime-etl",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "analytics", "running"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 6,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "inventory-management-api",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v2.3.8-e1f4a66",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "success",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-b",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:14:17",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "2m 08s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Implement automated stock reordering with ML predictions",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "lisa.wong",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "inventory / ml-pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/auto-reorder",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "inventory", "ml"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 7,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "fraud-detection-engine",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v1.9.3-a7b2c88",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "failed",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-a",<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:12:04",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "5m 33s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Update ML model for detecting synthetic identity fraud",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "james.taylor",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "fraud-detection / ml-training",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "model/synthetic-identity",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "ml", "security", "failed"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 8,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "mobile-app-backend",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v3.0.5-d8e9f11",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "success",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-staging",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:10:39",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "3m 45s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Add GraphQL subscription support for real-time chat",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "rachel.brown",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "mobile-backend / graphql pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/graphql-subscriptions",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["staging", "mobile", "graphql"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 9,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "search-indexing-service",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v2.7.1-f3c4d99",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "running",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-a",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:08:15",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "6m 12s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Migrate from Elasticsearch to OpenSearch with zero downtime",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "kevin.lee",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "search / migration pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "migration/opensearch",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "search", "migration", "running"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 10,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "customer-support-bot",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v1.4.7-b6a5e33",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "success",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-b",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:06:28",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "2m 22s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Integrate GPT-4 for improved natural language understanding",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "anna.davis",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "support-bot / ai pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/gpt4-integration",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "ai", "support"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 11,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "logging-aggregation-service",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v1.2.9-c7d8e44",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "failed",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-staging",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:04:51",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "1m 18s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Fix memory leak in log parsing for high-volume streams",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "tom.wilson",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "logging / performance pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "bugfix/memory-leak",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["staging", "logging", "performance", "failed"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 12,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "content-delivery-optimizer",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v2.8.3-e9f1a77",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "success",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-a",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:02:16",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "4m 05s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Implement edge caching with dynamic content invalidation",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "sophia.martinez",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "cdn / edge pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/edge-caching",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "cdn", "performance"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 13,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "backup-orchestration-tool",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v1.6.4-a2b3c88",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "running",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-b",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 03:00:33",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "8m 42s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Add cross-region backup replication for disaster recovery",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "robert.garcia",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "backup / disaster-recovery",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/cross-region-backup",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "backup", "disaster-recovery", "running"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 14,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "monitoring-dashboard-api",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v3.1.6-d4e5f99",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "success",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-staging",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 02:58:47",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "2m 34s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Add custom alerting rules with Slack integration",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "michelle.chen",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "monitoring / alerting pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/slack-alerts",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["staging", "monitoring", "alerts"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 15,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "recommendation-engine",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v2.4.2-f6g7h11",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "failed",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-a",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 02:56:12",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "7m 18s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Deploy collaborative filtering model with A/B testing framework",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "daniel.kim",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "recommendations / ml-pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "model/collaborative-filtering",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "ml", "recommendations", "failed"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 16,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "security-audit-scanner",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v1.8.1-g8h9i22",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "success",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-staging",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 02:54:05",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "3m 27s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Add OWASP Top 10 vulnerability scanning automation",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "patricia.taylor",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "security / audit pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/owasp-scanning",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["staging", "security", "audit"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 17,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "websocket-message-broker",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v2.1.8-h3i4j55",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "running",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-b",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 02:52:38",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "1m 45s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Scale WebSocket connections with Redis cluster backend",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "christopher.lopez",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "websocket / scaling pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/redis-scaling",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "websocket", "scaling", "running"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 18,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "image-processing-worker",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v1.7.9-i4j5k66",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "success",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-a",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 02:50:21",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "5m 16s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Optimize image compression with WebP and AVIF support",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "samantha.white",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "media / processing pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/webp-avif",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "media", "optimization"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 19,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "config-management-service",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v1.3.5-j5k6l77",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "failed",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-staging",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 02:48:44",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "2m 09s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Implement feature flags with gradual rollout capabilities",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "jonathan.anderson",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "config / feature-flags",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "feature/gradual-rollout",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["staging", "config", "feature-flags", "failed"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                </span>id: 20,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>name: "database-migration-tool",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>version: "v2.2.3-k6l7m88",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: "success",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: "cci-prod-b",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timestamp: "2025-03-20 02:46:57",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>duration: "12m 33s",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>commitMessage: "Execute schema migration for user table partitioning",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: "elizabeth.murphy",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>pipeline: "database / migration pipeline",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>branch: "migration/user-partitioning",</p>
-<p class="p1"><span class="Apple-converted-space">                </span>tags: ["production", "database", "migration"]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Search suggestions for Datadog-style semantic search</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const searchSuggestionsData = [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"failed between 03:00 and 03:40",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"status:failed last 4 hours",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"production failures today",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"@timestamp:&gt;2025-03-20T03:00:00Z",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"@timestamp:=2025-03-19",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"last 4 hours",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"today",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"yesterday",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"failed environment:production between 03:00 and 03:40",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"data-archival-service @timestamp:&gt;2025-03-20T03:00:00",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"author:fozzie last 24 hours",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"what broke job processing?",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"status:failed",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"environment:cci-prod-a",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"author:sarah.chen",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"service:payment-processing",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"branch:hotfix/*",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"duration:&gt;5m",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"tags:security",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"deployed before 03:00",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"ml pipeline failures",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"running deployments",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"production only",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"staging failures today",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"author:fozzie",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"user-authentication-service",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"payment-processing-engine",</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"fraud-detection-engine"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>let currentFilter = 'all';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>let currentSearch = '';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Advanced search query parser for SRE scenarios</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function parseSearchQuery(query) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const conditions = {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>status: null,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>environment: null,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>author: null,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>service: null,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>timeRange: null,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>text: []</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (!query) return conditions;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>const queryLower = query.toLowerCase();</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Parse status conditions</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (queryLower.includes('status:failed') || queryLower.includes('failed')) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>conditions.status = 'failed';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else if (queryLower.includes('status:success') || queryLower.includes('success')) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>conditions.status = 'success';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else if (queryLower.includes('status:running') || queryLower.includes('running')) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>conditions.status = 'running';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Parse environment conditions</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (queryLower.includes('environment:production') || queryLower.includes('production')) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>conditions.environment = 'production';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else if (queryLower.includes('environment:staging') || queryLower.includes('staging')) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>conditions.environment = 'staging';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Parse specific environment targets</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const envMatch = query.match(/environment:(cci-[a-z-]+)/i);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (envMatch) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>conditions.environment = envMatch[1];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Parse author conditions</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const authorMatch = query.match(/author:([a-zA-Z.]+)/i);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (authorMatch) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>conditions.author = authorMatch[1];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Parse service/component names</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const serviceMatch = query.match(/([a-z-]+)-service/i) || query.match(/([a-z-]+)-engine/i) || query.match(/([a-z-]+)-api/i);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (serviceMatch) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>conditions.service = serviceMatch[0];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Parse time conditions with multiple formats</p>
-<p class="p1"><span class="Apple-converted-space">            </span>conditions.timeRange = parseTimeRange(query);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Extract remaining text for general search</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let remainingText = query;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>remainingText = remainingText.replace(/status:\w+/gi, '');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>remainingText = remainingText.replace(/environment:\w+/gi, '');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>remainingText = remainingText.replace(/author:\w+/gi, '');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>remainingText = remainingText.replace(/@timestamp[^,\s]*/gi, '');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>remainingText = remainingText.replace(/between \d{2}:\d{2} and \d{2}:\d{2}/gi, '');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>remainingText = remainingText.replace(/last \d+ hours?/gi, '');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>remainingText = remainingText.replace(/today|yesterday/gi, '');</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (remainingText.trim()) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>conditions.text = remainingText.trim().split(/\s+/);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>return conditions;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function parseTimeRange(query) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const now = new Date('2025-03-20 03:30:00'); // Mock current time</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const queryLower = query.toLowerCase();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Handle "between HH:MM and HH:MM" format</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const betweenMatch = query.match(/between (\d{2}):(\d{2}) and (\d{2}):(\d{2})/i);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (betweenMatch) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const startHour = parseInt(betweenMatch[1]);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const startMin = parseInt(betweenMatch[2]);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const endHour = parseInt(betweenMatch[3]);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const endMin = parseInt(betweenMatch[4]);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>const today = new Date(now);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>today.setHours(0, 0, 0, 0);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>const startTime = new Date(today);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>startTime.setHours(startHour, startMin);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>const endTime = new Date(today);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>endTime.setHours(endHour, endMin);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>return { start: startTime, end: endTime };</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Handle "last X hours" format</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const lastHoursMatch = query.match(/last (\d+) hours?/i);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (lastHoursMatch) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const hours = parseInt(lastHoursMatch[1]);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const startTime = new Date(now.getTime() - (hours * 60 * 60 * 1000));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return { start: startTime, end: now };</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Handle ISO 8601 timestamps</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const isoMatch = query.match(/@timestamp:([&gt;&lt;=])(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z?)/i);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (isoMatch) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const operator = isoMatch[1];</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const timestamp = new Date(isoMatch[2]);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (operator === '&gt;') {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>return { start: timestamp, end: null };</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else if (operator === '&lt;') {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>return { start: null, end: timestamp };</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else if (operator === '=') {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const endTime = new Date(timestamp.getTime() + (24 * 60 * 60 * 1000));</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>return { start: timestamp, end: endTime };</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Handle simple date format</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const simpleDateMatch = query.match(/@timestamp:=(\d{4}-\d{2}-\d{2})/i);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (simpleDateMatch) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const date = new Date(simpleDateMatch[1]);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const endDate = new Date(date.getTime() + (24 * 60 * 60 * 1000));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return { start: date, end: endDate };</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Handle natural language</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (queryLower.includes('today')) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const today = new Date(now);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>today.setHours(0, 0, 0, 0);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return { start: today, end: tomorrow };</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (queryLower.includes('yesterday')) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const yesterday = new Date(now);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>yesterday.setDate(yesterday.getDate() - 1);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>yesterday.setHours(0, 0, 0, 0);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const today = new Date(yesterday.getTime() + (24 * 60 * 60 * 1000));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return { start: yesterday, end: today };</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (queryLower.includes('last 24 hours')) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const startTime = new Date(now.getTime() - (24 * 60 * 60 * 1000));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return { start: startTime, end: now };</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>return null;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function filterDeployments(data, filter, search) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let filtered = [...data];</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Apply button filter first</p>
-<p class="p1"><span class="Apple-converted-space">            </span>switch (filter) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 'failures':</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>filtered = filtered.filter(d =&gt; d.status === 'failed');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 'running':</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>filtered = filtered.filter(d =&gt; d.status === 'running');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 'production':</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>filtered = filtered.filter(d =&gt; d.environment.includes('prod'));</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 'recent':</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const twoHoursAgo = new Date('2025-03-20 01:30:00');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>filtered = filtered.filter(d =&gt; new Date(d.timestamp) &gt; twoHoursAgo);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>case 'all':</p>
-<p class="p1"><span class="Apple-converted-space">                </span>default:</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Show all deployments</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Apply advanced search parsing</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (search) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const conditions = parseSearchQuery(search);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>filtered = filtered.filter(deploy =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Check status condition</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (conditions.status &amp;&amp; deploy.status !== conditions.status) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Check environment condition</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (conditions.environment) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>if (conditions.environment === 'production' &amp;&amp; !deploy.environment.includes('prod')) {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>} else if (conditions.environment === 'staging' &amp;&amp; !deploy.environment.includes('staging')) {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>} else if (conditions.environment.startsWith('cci-') &amp;&amp; deploy.environment !== conditions.environment) {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Check author condition</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (conditions.author &amp;&amp; !deploy.author.toLowerCase().includes(conditions.author.toLowerCase())) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Check service condition</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (conditions.service &amp;&amp; !deploy.name.toLowerCase().includes(conditions.service.toLowerCase())) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Check time range condition</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (conditions.timeRange) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const deployTime = new Date(deploy.timestamp);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const { start, end } = conditions.timeRange;</p>
-<p class="p2"><span class="Apple-converted-space">                        </span></p>
-<p class="p1"><span class="Apple-converted-space">                        </span>if (start &amp;&amp; deployTime &lt; start) {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>if (end &amp;&amp; deployTime &gt; end) {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>// Check text conditions (general search)</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (conditions.text.length &gt; 0) {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const searchableText = [</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>deploy.name,</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>deploy.commitMessage,</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>deploy.author,</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>deploy.environment,</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>deploy.branch,</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>deploy.pipeline,</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>...deploy.tags</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>].join(' ').toLowerCase();</p>
-<p class="p2"><span class="Apple-converted-space">                        </span></p>
-<p class="p1"><span class="Apple-converted-space">                        </span>return conditions.text.every(term =&gt;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                            </span>searchableText.includes(term.toLowerCase())</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>return true;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>return filtered;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function renderDeployItem(deploy) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const timeAgo = getTimeAgo(deploy.timestamp);</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>return `</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="deploy-item ${deploy.status}" data-tags="${deploy.tags.join(' ')}" data-environment="${deploy.environment}"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="deploy-actions"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="action-button"&gt;View&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="action-button"&gt;Logs&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="action-button"&gt;⋯&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="deploy-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="deploy-title"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="status-icon ${deploy.status}"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="deploy-name"&gt;${deploy.name}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="deploy-version"&gt;${deploy.version}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="arrow"&gt;→&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="environment-tag ${deploy.environment.includes('prod') ? 'production' : ''}"&gt;${deploy.environment}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="deploy-status"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="status-badge ${deploy.status}"&gt;${deploy.status.charAt(0).toUpperCase() + deploy.status.slice(1)}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="deploy-time"&gt;${timeAgo}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="deploy-timestamp"&gt;${deploy.timestamp}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;button class="refresh-button"&gt;🔄&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="commit-message-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>${deploy.commitMessage}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="deploy-meta"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="meta-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>⚡ Commit push by &lt;strong&gt;${deploy.author}&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="meta-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>🏗️ &lt;a href="#" class="pipeline-link"&gt;${deploy.pipeline}&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="meta-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>🌿 ${deploy.branch}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="meta-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>⏱️ ${deploy.duration}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function getTimeAgo(timestamp) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const now = new Date('2025-03-20 03:30:00'); // Mock current time</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const deployTime = new Date(timestamp);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const diffMinutes = Math.floor((now - deployTime) / (1000 * 60));</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (diffMinutes &lt; 60) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return `${diffMinutes}m ago`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else if (diffMinutes &lt; 1440) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return `${Math.floor(diffMinutes / 60)}h ago`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return `${Math.floor(diffMinutes / 1440)}d ago`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function renderDeployments() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const deployList = document.getElementById('deployList');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const filtered = filterDeployments(deployData, currentFilter, currentSearch);</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (filtered.length === 0) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>deployList.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="text-align: center; padding: 48px; color: #6b7280;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div style="font-size: 48px; margin-bottom: 16px;"&gt;🔍&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 style="margin-bottom: 8px;"&gt;No deployments found&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;Try adjusting your search or filters&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>deployList.innerHTML = filtered.map(deploy =&gt; renderDeployItem(deploy)).join('');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Search functionality</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const searchInput = document.getElementById('searchInput');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const searchSuggestionsEl = document.getElementById('searchSuggestions');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>searchInput.addEventListener('input', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>currentSearch = e.target.value;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>renderDeployments();</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Show suggestions</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (e.target.value.length &gt; 0) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const suggestions = searchSuggestionsData.filter(s =&gt;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>s.toLowerCase().includes(e.target.value.toLowerCase())</p>
-<p class="p1"><span class="Apple-converted-space">                </span>).slice(0, 6);</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (suggestions.length &gt; 0) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>searchSuggestionsEl.innerHTML = suggestions.map(s =&gt;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                        </span>`&lt;div class="search-suggestion" onclick="selectSuggestion('${s}')"&gt;${s}&lt;/div&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>).join('');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>searchSuggestionsEl.style.display = 'block';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>searchSuggestionsEl.style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>searchSuggestionsEl.style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>searchInput.addEventListener('blur', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>searchSuggestionsEl.style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}, 200);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function selectSuggestion(suggestion) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>searchInput.value = suggestion;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>currentSearch = suggestion;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>renderDeployments();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>searchSuggestionsEl.style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Filter functionality</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.querySelectorAll('.filter-button').forEach(button =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>button.addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>document.querySelectorAll('.filter-button').forEach(b =&gt; b.classList.remove('active'));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>button.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>currentFilter = button.dataset.filter;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>renderDeployments();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Initial render</p>
-<p class="p1"><span class="Apple-converted-space">        </span>renderDeployments();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Auto-refresh running deployments every 5 seconds</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setInterval(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Simulate status updates for running deployments</p>
-<p class="p1"><span class="Apple-converted-space">            </span>deployData.forEach(deploy =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (deploy.status === 'running') {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const rand = Math.random();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (rand &lt; 0.1) { // 10% chance to complete</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>deploy.status = rand &lt; 0.08 ? 'success' : 'failed';</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>renderDeployments();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}, 5000);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">◉</div>
+            circleci
+            <div class="badge">OPERATIONAL</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <span>🔔</span>
+            <span>❓</span>
+            <span>👤</span>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="sidebar">
+            <h3>Acme Co.</h3>
+            <div class="sidebar-item">🏠 Organization Home</div>
+            <div class="sidebar-item">🔄 Pipelines</div>
+            <div class="sidebar-item">📁 Projects</div>
+            <div class="sidebar-item active">🚀 Deploys</div>
+            <div class="sidebar-item">📊 Insights</div>
+            <div class="sidebar-item">🔧 Resources</div>
+            <div class="sidebar-item">⚙️ Settings</div>
+        </div>
+
+        <div class="content">
+            <div class="page-header">
+                <h1 class="page-title">Deploys</h1>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="timeline">
+                        TIMELINE
+                        <div class="indicator"></div>
+                    </div>
+                    <div class="tab" data-tab="environments">
+                        ENVIRONMENTS
+                        <span style="color: #ef4444; font-size: 12px; margin-left: 8px;">🔴🟢</span>
+                    </div>
+                    <div class="tab" data-tab="components">
+                        COMPONENTS
+                        <span style="color: #ef4444; font-size: 12px; margin-left: 8px;">2 failing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <div class="search-icon">🔍</div>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Try: 'failed between 03:00 and 03:40', 'author:fozzie last 24 hours', 'production failures today', '@timestamp:>2025-03-20T03:00:00Z'"
+                    id="searchInput"
+                    autocomplete="off"
+                >
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+
+            <div class="filters">
+                <div class="filter-button" data-filter="failures">
+                    🚨 Show Failures
+                </div>
+                <div class="filter-button running" data-filter="running">
+                    🔄 Currently Running
+                </div>
+                <div class="filter-button production" data-filter="production">
+                    🏭 Production Only
+                </div>
+                <div class="filter-button recent" data-filter="recent">
+                    🕐 Recent Activity
+                </div>
+            </div>
+
+            <div class="deploy-list" id="deployList">
+                <!-- Deploy items will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data with 20 diverse entries covering all filter criteria
+        const deployData = [
+            {
+                id: 1,
+                name: "user-authentication-service",
+                version: "v2.1.4-a8f9e2d",
+                status: "failed",
+                environment: "cci-prod-a",
+                timestamp: "2025-03-20 03:24:12",
+                duration: "2m 45s",
+                commitMessage: "Fix OAuth2 token refresh vulnerability in user sessions",
+                author: "sarah.chen",
+                pipeline: "security-patches / default pipeline",
+                branch: "hotfix/oauth-security",
+                tags: ["production", "security", "critical"]
+            },
+            {
+                id: 2,
+                name: "payment-processing-engine",
+                version: "v1.8.7-d4c2b91",
+                status: "running",
+                environment: "cci-prod-a",
+                timestamp: "2025-03-20 03:22:08",
+                duration: "1m 30s",
+                commitMessage: "Implement PCI DSS compliance for credit card processing",
+                author: "mike.rodriguez",
+                pipeline: "payment-service / default pipeline",
+                branch: "feature/pci-compliance",
+                tags: ["production", "payment", "running"]
+            },
+            {
+                id: 3,
+                name: "api-gateway-proxy",
+                version: "v3.2.1-f7e8a44",
+                status: "success",
+                environment: "cci-prod-b",
+                timestamp: "2025-03-20 03:20:33",
+                duration: "3m 12s",
+                commitMessage: "Add rate limiting and DDoS protection middleware",
+                author: "alex.kumar",
+                pipeline: "gateway-service / production pipeline",
+                branch: "main",
+                tags: ["production", "security", "success"]
+            },
+            {
+                id: 4,
+                name: "notification-dispatcher",
+                version: "v1.5.2-b9c3e77",
+                status: "failed",
+                environment: "cci-staging",
+                timestamp: "2025-03-20 03:18:45",
+                duration: "1m 55s",
+                commitMessage: "Fix email template rendering for multi-language support",
+                author: "emma.johnson",
+                pipeline: "notifications / staging pipeline",
+                branch: "bugfix/template-rendering",
+                tags: ["staging", "notification", "failed"]
+            },
+            {
+                id: 5,
+                name: "data-analytics-processor",
+                version: "v4.1.0-c5d8f22",
+                status: "running",
+                environment: "cci-prod-a",
+                timestamp: "2025-03-20 03:16:22",
+                duration: "4m 20s",
+                commitMessage: "Optimize ETL pipeline for real-time analytics dashboard",
+                author: "david.park",
+                pipeline: "analytics / etl pipeline",
+                branch: "feature/realtime-etl",
+                tags: ["production", "analytics", "running"]
+            },
+            {
+                id: 6,
+                name: "inventory-management-api",
+                version: "v2.3.8-e1f4a66",
+                status: "success",
+                environment: "cci-prod-b",
+                timestamp: "2025-03-20 03:14:17",
+                duration: "2m 08s",
+                commitMessage: "Implement automated stock reordering with ML predictions",
+                author: "lisa.wong",
+                pipeline: "inventory / ml-pipeline",
+                branch: "feature/auto-reorder",
+                tags: ["production", "inventory", "ml"]
+            },
+            {
+                id: 7,
+                name: "fraud-detection-engine",
+                version: "v1.9.3-a7b2c88",
+                status: "failed",
+                environment: "cci-prod-a", 
+                timestamp: "2025-03-20 03:12:04",
+                duration: "5m 33s",
+                commitMessage: "Update ML model for detecting synthetic identity fraud",
+                author: "james.taylor",
+                pipeline: "fraud-detection / ml-training",
+                branch: "model/synthetic-identity",
+                tags: ["production", "ml", "security", "failed"]
+            },
+            {
+                id: 8,
+                name: "mobile-app-backend",
+                version: "v3.0.5-d8e9f11",
+                status: "success",
+                environment: "cci-staging",
+                timestamp: "2025-03-20 03:10:39",
+                duration: "3m 45s",
+                commitMessage: "Add GraphQL subscription support for real-time chat",
+                author: "rachel.brown",
+                pipeline: "mobile-backend / graphql pipeline",
+                branch: "feature/graphql-subscriptions",
+                tags: ["staging", "mobile", "graphql"]
+            },
+            {
+                id: 9,
+                name: "search-indexing-service",
+                version: "v2.7.1-f3c4d99",
+                status: "running",
+                environment: "cci-prod-a",
+                timestamp: "2025-03-20 03:08:15",
+                duration: "6m 12s",
+                commitMessage: "Migrate from Elasticsearch to OpenSearch with zero downtime",
+                author: "kevin.lee",
+                pipeline: "search / migration pipeline",
+                branch: "migration/opensearch",
+                tags: ["production", "search", "migration", "running"]
+            },
+            {
+                id: 10,
+                name: "customer-support-bot",
+                version: "v1.4.7-b6a5e33",
+                status: "success",
+                environment: "cci-prod-b",
+                timestamp: "2025-03-20 03:06:28",
+                duration: "2m 22s",
+                commitMessage: "Integrate GPT-4 for improved natural language understanding",
+                author: "anna.davis",
+                pipeline: "support-bot / ai pipeline",
+                branch: "feature/gpt4-integration",
+                tags: ["production", "ai", "support"]
+            },
+            {
+                id: 11,
+                name: "logging-aggregation-service",
+                version: "v1.2.9-c7d8e44",
+                status: "failed",
+                environment: "cci-staging",
+                timestamp: "2025-03-20 03:04:51",
+                duration: "1m 18s",
+                commitMessage: "Fix memory leak in log parsing for high-volume streams",
+                author: "tom.wilson",
+                pipeline: "logging / performance pipeline",
+                branch: "bugfix/memory-leak",
+                tags: ["staging", "logging", "performance", "failed"]
+            },
+            {
+                id: 12,
+                name: "content-delivery-optimizer",
+                version: "v2.8.3-e9f1a77",
+                status: "success",
+                environment: "cci-prod-a",
+                timestamp: "2025-03-20 03:02:16",
+                duration: "4m 05s",
+                commitMessage: "Implement edge caching with dynamic content invalidation",
+                author: "sophia.martinez",
+                pipeline: "cdn / edge pipeline",
+                branch: "feature/edge-caching",
+                tags: ["production", "cdn", "performance"]
+            },
+            {
+                id: 13,
+                name: "backup-orchestration-tool",
+                version: "v1.6.4-a2b3c88",
+                status: "running",
+                environment: "cci-prod-b",
+                timestamp: "2025-03-20 03:00:33",
+                duration: "8m 42s",
+                commitMessage: "Add cross-region backup replication for disaster recovery",
+                author: "robert.garcia",
+                pipeline: "backup / disaster-recovery",
+                branch: "feature/cross-region-backup",
+                tags: ["production", "backup", "disaster-recovery", "running"]
+            },
+            {
+                id: 14,
+                name: "monitoring-dashboard-api",
+                version: "v3.1.6-d4e5f99",
+                status: "success",
+                environment: "cci-staging",
+                timestamp: "2025-03-20 02:58:47",
+                duration: "2m 34s",
+                commitMessage: "Add custom alerting rules with Slack integration",
+                author: "michelle.chen",
+                pipeline: "monitoring / alerting pipeline",
+                branch: "feature/slack-alerts",
+                tags: ["staging", "monitoring", "alerts"]
+            },
+            {
+                id: 15,
+                name: "recommendation-engine",
+                version: "v2.4.2-f6g7h11",
+                status: "failed",
+                environment: "cci-prod-a",
+                timestamp: "2025-03-20 02:56:12",
+                duration: "7m 18s",
+                commitMessage: "Deploy collaborative filtering model with A/B testing framework",
+                author: "daniel.kim",
+                pipeline: "recommendations / ml-pipeline",
+                branch: "model/collaborative-filtering",
+                tags: ["production", "ml", "recommendations", "failed"]
+            },
+            {
+                id: 16,
+                name: "security-audit-scanner",
+                version: "v1.8.1-g8h9i22",
+                status: "success",
+                environment: "cci-staging",
+                timestamp: "2025-03-20 02:54:05",
+                duration: "3m 27s",
+                commitMessage: "Add OWASP Top 10 vulnerability scanning automation",
+                author: "patricia.taylor",
+                pipeline: "security / audit pipeline",
+                branch: "feature/owasp-scanning",
+                tags: ["staging", "security", "audit"]
+            },
+            {
+                id: 17,
+                name: "websocket-message-broker",
+                version: "v2.1.8-h3i4j55",
+                status: "running",
+                environment: "cci-prod-b",
+                timestamp: "2025-03-20 02:52:38",
+                duration: "1m 45s",
+                commitMessage: "Scale WebSocket connections with Redis cluster backend",
+                author: "christopher.lopez",
+                pipeline: "websocket / scaling pipeline",
+                branch: "feature/redis-scaling",
+                tags: ["production", "websocket", "scaling", "running"]
+            },
+            {
+                id: 18,
+                name: "image-processing-worker",
+                version: "v1.7.9-i4j5k66",
+                status: "success",
+                environment: "cci-prod-a",
+                timestamp: "2025-03-20 02:50:21",
+                duration: "5m 16s",
+                commitMessage: "Optimize image compression with WebP and AVIF support",
+                author: "samantha.white",
+                pipeline: "media / processing pipeline",
+                branch: "feature/webp-avif",
+                tags: ["production", "media", "optimization"]
+            },
+            {
+                id: 19,
+                name: "config-management-service",
+                version: "v1.3.5-j5k6l77",
+                status: "failed",
+                environment: "cci-staging",
+                timestamp: "2025-03-20 02:48:44",
+                duration: "2m 09s",
+                commitMessage: "Implement feature flags with gradual rollout capabilities",
+                author: "jonathan.anderson",
+                pipeline: "config / feature-flags",
+                branch: "feature/gradual-rollout",
+                tags: ["staging", "config", "feature-flags", "failed"]
+            },
+            {
+                id: 20,
+                name: "database-migration-tool",
+                version: "v2.2.3-k6l7m88",
+                status: "success",
+                environment: "cci-prod-b",
+                timestamp: "2025-03-20 02:46:57",
+                duration: "12m 33s",
+                commitMessage: "Execute schema migration for user table partitioning",
+                author: "elizabeth.murphy",
+                pipeline: "database / migration pipeline",
+                branch: "migration/user-partitioning",
+                tags: ["production", "database", "migration"]
+            }
+        ];
+
+        // Search suggestions for Datadog-style semantic search
+        const searchSuggestionsData = [
+            "failed between 03:00 and 03:40",
+            "status:failed last 4 hours",
+            "production failures today",
+            "@timestamp:>2025-03-20T03:00:00Z",
+            "@timestamp:=2025-03-19",
+            "last 4 hours",
+            "today",
+            "yesterday",
+            "failed environment:production between 03:00 and 03:40",
+            "data-archival-service @timestamp:>2025-03-20T03:00:00",
+            "author:fozzie last 24 hours",
+            "what broke job processing?",
+            "status:failed",
+            "environment:cci-prod-a",
+            "author:sarah.chen",
+            "service:payment-processing",
+            "branch:hotfix/*",
+            "duration:>5m",
+            "tags:security",
+            "deployed before 03:00",
+            "ml pipeline failures",
+            "running deployments",
+            "production only",
+            "staging failures today",
+            "author:fozzie",
+            "user-authentication-service",
+            "payment-processing-engine",
+            "fraud-detection-engine"
+        ];
+
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        // Advanced search query parser for SRE scenarios
+        function parseSearchQuery(query) {
+            const conditions = {
+                status: null,
+                environment: null,
+                author: null,
+                service: null,
+                timeRange: null,
+                text: []
+            };
+
+            if (!query) return conditions;
+
+            const queryLower = query.toLowerCase();
+            
+            // Parse status conditions
+            if (queryLower.includes('status:failed') || queryLower.includes('failed')) {
+                conditions.status = 'failed';
+            } else if (queryLower.includes('status:success') || queryLower.includes('success')) {
+                conditions.status = 'success';
+            } else if (queryLower.includes('status:running') || queryLower.includes('running')) {
+                conditions.status = 'running';
+            }
+
+            // Parse environment conditions
+            if (queryLower.includes('environment:production') || queryLower.includes('production')) {
+                conditions.environment = 'production';
+            } else if (queryLower.includes('environment:staging') || queryLower.includes('staging')) {
+                conditions.environment = 'staging';
+            }
+
+            // Parse specific environment targets
+            const envMatch = query.match(/environment:(cci-[a-z-]+)/i);
+            if (envMatch) {
+                conditions.environment = envMatch[1];
+            }
+
+            // Parse author conditions
+            const authorMatch = query.match(/author:([a-zA-Z.]+)/i);
+            if (authorMatch) {
+                conditions.author = authorMatch[1];
+            }
+
+            // Parse service/component names
+            const serviceMatch = query.match(/([a-z-]+)-service/i) || query.match(/([a-z-]+)-engine/i) || query.match(/([a-z-]+)-api/i);
+            if (serviceMatch) {
+                conditions.service = serviceMatch[0];
+            }
+
+            // Parse time conditions with multiple formats
+            conditions.timeRange = parseTimeRange(query);
+
+            // Extract remaining text for general search
+            let remainingText = query;
+            remainingText = remainingText.replace(/status:\w+/gi, '');
+            remainingText = remainingText.replace(/environment:\w+/gi, '');
+            remainingText = remainingText.replace(/author:\w+/gi, '');
+            remainingText = remainingText.replace(/@timestamp[^,\s]*/gi, '');
+            remainingText = remainingText.replace(/between \d{2}:\d{2} and \d{2}:\d{2}/gi, '');
+            remainingText = remainingText.replace(/last \d+ hours?/gi, '');
+            remainingText = remainingText.replace(/today|yesterday/gi, '');
+            
+            if (remainingText.trim()) {
+                conditions.text = remainingText.trim().split(/\s+/);
+            }
+
+            return conditions;
+        }
+
+        function parseTimeRange(query) {
+            const now = new Date('2025-03-20 03:30:00'); // Mock current time
+            const queryLower = query.toLowerCase();
+
+            // Handle "between HH:MM and HH:MM" format
+            const betweenMatch = query.match(/between (\d{2}):(\d{2}) and (\d{2}):(\d{2})/i);
+            if (betweenMatch) {
+                const startHour = parseInt(betweenMatch[1]);
+                const startMin = parseInt(betweenMatch[2]);
+                const endHour = parseInt(betweenMatch[3]);
+                const endMin = parseInt(betweenMatch[4]);
+                
+                const today = new Date(now);
+                today.setHours(0, 0, 0, 0);
+                
+                const startTime = new Date(today);
+                startTime.setHours(startHour, startMin);
+                
+                const endTime = new Date(today);
+                endTime.setHours(endHour, endMin);
+                
+                return { start: startTime, end: endTime };
+            }
+
+            // Handle "last X hours" format
+            const lastHoursMatch = query.match(/last (\d+) hours?/i);
+            if (lastHoursMatch) {
+                const hours = parseInt(lastHoursMatch[1]);
+                const startTime = new Date(now.getTime() - (hours * 60 * 60 * 1000));
+                return { start: startTime, end: now };
+            }
+
+            // Handle ISO 8601 timestamps
+            const isoMatch = query.match(/@timestamp:([><=])(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z?)/i);
+            if (isoMatch) {
+                const operator = isoMatch[1];
+                const timestamp = new Date(isoMatch[2]);
+                
+                if (operator === '>') {
+                    return { start: timestamp, end: null };
+                } else if (operator === '<') {
+                    return { start: null, end: timestamp };
+                } else if (operator === '=') {
+                    const endTime = new Date(timestamp.getTime() + (24 * 60 * 60 * 1000));
+                    return { start: timestamp, end: endTime };
+                }
+            }
+
+            // Handle simple date format
+            const simpleDateMatch = query.match(/@timestamp:=(\d{4}-\d{2}-\d{2})/i);
+            if (simpleDateMatch) {
+                const date = new Date(simpleDateMatch[1]);
+                const endDate = new Date(date.getTime() + (24 * 60 * 60 * 1000));
+                return { start: date, end: endDate };
+            }
+
+            // Handle natural language
+            if (queryLower.includes('today')) {
+                const today = new Date(now);
+                today.setHours(0, 0, 0, 0);
+                const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+                return { start: today, end: tomorrow };
+            }
+
+            if (queryLower.includes('yesterday')) {
+                const yesterday = new Date(now);
+                yesterday.setDate(yesterday.getDate() - 1);
+                yesterday.setHours(0, 0, 0, 0);
+                const today = new Date(yesterday.getTime() + (24 * 60 * 60 * 1000));
+                return { start: yesterday, end: today };
+            }
+
+            if (queryLower.includes('last 24 hours')) {
+                const startTime = new Date(now.getTime() - (24 * 60 * 60 * 1000));
+                return { start: startTime, end: now };
+            }
+
+            return null;
+        }
+
+        function filterDeployments(data, filter, search) {
+            let filtered = [...data];
+            
+            // Apply button filter first
+            switch (filter) {
+                case 'failures':
+                    filtered = filtered.filter(d => d.status === 'failed');
+                    break;
+                case 'running':
+                    filtered = filtered.filter(d => d.status === 'running');
+                    break;
+                case 'production':
+                    filtered = filtered.filter(d => d.environment.includes('prod'));
+                    break;
+                case 'recent':
+                    const twoHoursAgo = new Date('2025-03-20 01:30:00');
+                    filtered = filtered.filter(d => new Date(d.timestamp) > twoHoursAgo);
+                    break;
+                case 'all':
+                default:
+                    // Show all deployments
+                    break;
+            }
+            
+            // Apply advanced search parsing
+            if (search) {
+                const conditions = parseSearchQuery(search);
+                
+                filtered = filtered.filter(deploy => {
+                    // Check status condition
+                    if (conditions.status && deploy.status !== conditions.status) {
+                        return false;
+                    }
+                    
+                    // Check environment condition
+                    if (conditions.environment) {
+                        if (conditions.environment === 'production' && !deploy.environment.includes('prod')) {
+                            return false;
+                        } else if (conditions.environment === 'staging' && !deploy.environment.includes('staging')) {
+                            return false;
+                        } else if (conditions.environment.startsWith('cci-') && deploy.environment !== conditions.environment) {
+                            return false;
+                        }
+                    }
+                    
+                    // Check author condition
+                    if (conditions.author && !deploy.author.toLowerCase().includes(conditions.author.toLowerCase())) {
+                        return false;
+                    }
+                    
+                    // Check service condition
+                    if (conditions.service && !deploy.name.toLowerCase().includes(conditions.service.toLowerCase())) {
+                        return false;
+                    }
+                    
+                    // Check time range condition
+                    if (conditions.timeRange) {
+                        const deployTime = new Date(deploy.timestamp);
+                        const { start, end } = conditions.timeRange;
+                        
+                        if (start && deployTime < start) {
+                            return false;
+                        }
+                        if (end && deployTime > end) {
+                            return false;
+                        }
+                    }
+                    
+                    // Check text conditions (general search)
+                    if (conditions.text.length > 0) {
+                        const searchableText = [
+                            deploy.name,
+                            deploy.commitMessage,
+                            deploy.author,
+                            deploy.environment,
+                            deploy.branch,
+                            deploy.pipeline,
+                            ...deploy.tags
+                        ].join(' ').toLowerCase();
+                        
+                        return conditions.text.every(term => 
+                            searchableText.includes(term.toLowerCase())
+                        );
+                    }
+                    
+                    return true;
+                });
+            }
+            
+            return filtered;
+        }
+
+        function renderDeployItem(deploy) {
+            const timeAgo = getTimeAgo(deploy.timestamp);
+            
+            return `
+                <div class="deploy-item ${deploy.status}" data-tags="${deploy.tags.join(' ')}" data-environment="${deploy.environment}">
+                    <div class="deploy-actions">
+                        <button class="action-button">View</button>
+                        <button class="action-button">Logs</button>
+                        <button class="action-button">⋯</button>
+                    </div>
+                    
+                    <div class="deploy-header">
+                        <div class="deploy-title">
+                            <div class="status-icon ${deploy.status}"></div>
+                            <span class="deploy-name">${deploy.name}</span>
+                            <span class="deploy-version">${deploy.version}</span>
+                            <span class="arrow">→</span>
+                            <span class="environment-tag ${deploy.environment.includes('prod') ? 'production' : ''}">${deploy.environment}</span>
+                        </div>
+                        <div class="deploy-status">
+                            <span class="status-badge ${deploy.status}">${deploy.status.charAt(0).toUpperCase() + deploy.status.slice(1)}</span>
+                            <span class="deploy-time">${timeAgo}</span>
+                            <span class="deploy-timestamp">${deploy.timestamp}</span>
+                            <button class="refresh-button">🔄</button>
+                        </div>
+                    </div>
+                    
+                    <div class="commit-message-header">
+                        ${deploy.commitMessage}
+                    </div>
+                    
+                    <div class="deploy-meta">
+                        <div class="meta-item">
+                            ⚡ Commit push by <strong>${deploy.author}</strong>
+                        </div>
+                        <div class="meta-item">
+                            🏗️ <a href="#" class="pipeline-link">${deploy.pipeline}</a>
+                        </div>
+                        <div class="meta-item">
+                            🌿 ${deploy.branch}
+                        </div>
+                        <div class="meta-item">
+                            ⏱️ ${deploy.duration}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = new Date('2025-03-20 03:30:00'); // Mock current time
+            const deployTime = new Date(timestamp);
+            const diffMinutes = Math.floor((now - deployTime) / (1000 * 60));
+            
+            if (diffMinutes < 60) {
+                return `${diffMinutes}m ago`;
+            } else if (diffMinutes < 1440) {
+                return `${Math.floor(diffMinutes / 60)}h ago`;
+            } else {
+                return `${Math.floor(diffMinutes / 1440)}d ago`;
+            }
+        }
+
+        function renderDeployments() {
+            const deployList = document.getElementById('deployList');
+            const filtered = filterDeployments(deployData, currentFilter, currentSearch);
+            
+            if (filtered.length === 0) {
+                deployList.innerHTML = `
+                    <div style="text-align: center; padding: 48px; color: #6b7280;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
+                        <h3 style="margin-bottom: 8px;">No deployments found</h3>
+                        <p>Try adjusting your search or filters</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            deployList.innerHTML = filtered.map(deploy => renderDeployItem(deploy)).join('');
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestionsEl = document.getElementById('searchSuggestions');
+
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            renderDeployments();
+            
+            // Show suggestions
+            if (e.target.value.length > 0) {
+                const suggestions = searchSuggestionsData.filter(s => 
+                    s.toLowerCase().includes(e.target.value.toLowerCase())
+                ).slice(0, 6);
+                
+                if (suggestions.length > 0) {
+                    searchSuggestionsEl.innerHTML = suggestions.map(s => 
+                        `<div class="search-suggestion" onclick="selectSuggestion('${s}')">${s}</div>`
+                    ).join('');
+                    searchSuggestionsEl.style.display = 'block';
+                } else {
+                    searchSuggestionsEl.style.display = 'none';
+                }
+            } else {
+                searchSuggestionsEl.style.display = 'none';
+            }
+        });
+
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                searchSuggestionsEl.style.display = 'none';
+            }, 200);
+        });
+
+        function selectSuggestion(suggestion) {
+            searchInput.value = suggestion;
+            currentSearch = suggestion;
+            renderDeployments();
+            searchSuggestionsEl.style.display = 'none';
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                currentFilter = button.dataset.filter;
+                renderDeployments();
+            });
+        });
+
+        // Initial render
+        renderDeployments();
+
+        // Auto-refresh running deployments every 5 seconds
+        setInterval(() => {
+            // Simulate status updates for running deployments
+            deployData.forEach(deploy => {
+                if (deploy.status === 'running') {
+                    const rand = Math.random();
+                    if (rand < 0.1) { // 10% chance to complete
+                        deploy.status = rand < 0.08 ? 'success' : 'failed';
+                    }
+                }
+            });
+            renderDeployments();
+        }, 5000);
+    </script>
 </body>
 </html>
