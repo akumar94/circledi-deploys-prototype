@@ -542,7 +542,7 @@
     </div>
 
     <script>
-        // Mock data with 20 diverse entries covering all filter criteria
+        // Mock data with randomized dates covering multiple days
         const deployData = [
             {
                 id: 1,
@@ -550,7 +550,7 @@
                 version: "v2.1.4-a8f9e2d",
                 status: "failed",
                 environment: "cci-prod-a",
-                timestamp: "2025-03-20 03:24:12",
+                timestamp: "2025-03-20T03:24:12Z",
                 duration: "2m 45s",
                 commitMessage: "Fix OAuth2 token refresh vulnerability in user sessions",
                 author: "sarah.chen",
@@ -564,7 +564,7 @@
                 version: "v1.8.7-d4c2b91",
                 status: "running",
                 environment: "cci-prod-a",
-                timestamp: "2025-03-20 03:22:08",
+                timestamp: "2025-03-19T15:22:08Z",
                 duration: "1m 30s",
                 commitMessage: "Implement PCI DSS compliance for credit card processing",
                 author: "mike.rodriguez",
@@ -578,7 +578,7 @@
                 version: "v3.2.1-f7e8a44",
                 status: "success",
                 environment: "cci-prod-b",
-                timestamp: "2025-03-20 03:20:33",
+                timestamp: "2025-03-21T08:20:33Z",
                 duration: "3m 12s",
                 commitMessage: "Add rate limiting and DDoS protection middleware",
                 author: "alex.kumar",
@@ -592,7 +592,7 @@
                 version: "v1.5.2-b9c3e77",
                 status: "failed",
                 environment: "cci-staging",
-                timestamp: "2025-03-20 03:18:45",
+                timestamp: "2025-03-19T11:18:45Z",
                 duration: "1m 55s",
                 commitMessage: "Fix email template rendering for multi-language support",
                 author: "emma.johnson",
@@ -606,7 +606,7 @@
                 version: "v4.1.0-c5d8f22",
                 status: "running",
                 environment: "cci-prod-a",
-                timestamp: "2025-03-20 03:16:22",
+                timestamp: "2025-03-20T14:16:22Z",
                 duration: "4m 20s",
                 commitMessage: "Optimize ETL pipeline for real-time analytics dashboard",
                 author: "david.park",
@@ -620,7 +620,7 @@
                 version: "v2.3.8-e1f4a66",
                 status: "success",
                 environment: "cci-prod-b",
-                timestamp: "2025-03-20 03:14:17",
+                timestamp: "2025-03-18T22:14:17Z",
                 duration: "2m 08s",
                 commitMessage: "Implement automated stock reordering with ML predictions",
                 author: "lisa.wong",
@@ -634,7 +634,7 @@
                 version: "v1.9.3-a7b2c88",
                 status: "failed",
                 environment: "cci-prod-a", 
-                timestamp: "2025-03-20 03:12:04",
+                timestamp: "2025-03-20T03:12:04Z",
                 duration: "5m 33s",
                 commitMessage: "Update ML model for detecting synthetic identity fraud",
                 author: "james.taylor",
@@ -648,7 +648,7 @@
                 version: "v3.0.5-d8e9f11",
                 status: "success",
                 environment: "cci-staging",
-                timestamp: "2025-03-20 03:10:39",
+                timestamp: "2025-03-21T16:10:39Z",
                 duration: "3m 45s",
                 commitMessage: "Add GraphQL subscription support for real-time chat",
                 author: "rachel.brown",
@@ -662,7 +662,7 @@
                 version: "v2.7.1-f3c4d99",
                 status: "running",
                 environment: "cci-prod-a",
-                timestamp: "2025-03-20 03:08:15",
+                timestamp: "2025-03-19T20:08:15Z",
                 duration: "6m 12s",
                 commitMessage: "Migrate from Elasticsearch to OpenSearch with zero downtime",
                 author: "kevin.lee",
@@ -676,7 +676,7 @@
                 version: "v1.4.7-b6a5e33",
                 status: "success",
                 environment: "cci-prod-b",
-                timestamp: "2025-03-20 03:06:28",
+                timestamp: "2025-03-20T09:06:28Z",
                 duration: "2m 22s",
                 commitMessage: "Integrate GPT-4 for improved natural language understanding",
                 author: "anna.davis",
@@ -690,7 +690,7 @@
                 version: "v1.2.9-c7d8e44",
                 status: "failed",
                 environment: "cci-staging",
-                timestamp: "2025-03-20 03:04:51",
+                timestamp: "2025-03-18T17:04:51Z",
                 duration: "1m 18s",
                 commitMessage: "Fix memory leak in log parsing for high-volume streams",
                 author: "tom.wilson",
@@ -704,7 +704,7 @@
                 version: "v2.8.3-e9f1a77",
                 status: "success",
                 environment: "cci-prod-a",
-                timestamp: "2025-03-20 03:02:16",
+                timestamp: "2025-03-21T12:02:16Z",
                 duration: "4m 05s",
                 commitMessage: "Implement edge caching with dynamic content invalidation",
                 author: "sophia.martinez",
@@ -718,7 +718,7 @@
                 version: "v1.6.4-a2b3c88",
                 status: "running",
                 environment: "cci-prod-b",
-                timestamp: "2025-03-20 03:00:33",
+                timestamp: "2025-03-19T07:00:33Z",
                 duration: "8m 42s",
                 commitMessage: "Add cross-region backup replication for disaster recovery",
                 author: "robert.garcia",
@@ -732,7 +732,7 @@
                 version: "v3.1.6-d4e5f99",
                 status: "success",
                 environment: "cci-staging",
-                timestamp: "2025-03-20 02:58:47",
+                timestamp: "2025-03-20T18:58:47Z",
                 duration: "2m 34s",
                 commitMessage: "Add custom alerting rules with Slack integration",
                 author: "michelle.chen",
@@ -746,7 +746,7 @@
                 version: "v2.4.2-f6g7h11",
                 status: "failed",
                 environment: "cci-prod-a",
-                timestamp: "2025-03-20 02:56:12",
+                timestamp: "2025-03-18T04:56:12Z",
                 duration: "7m 18s",
                 commitMessage: "Deploy collaborative filtering model with A/B testing framework",
                 author: "daniel.kim",
@@ -760,7 +760,7 @@
                 version: "v1.8.1-g8h9i22",
                 status: "success",
                 environment: "cci-staging",
-                timestamp: "2025-03-20 02:54:05",
+                timestamp: "2025-03-21T13:54:05Z",
                 duration: "3m 27s",
                 commitMessage: "Add OWASP Top 10 vulnerability scanning automation",
                 author: "patricia.taylor",
@@ -774,7 +774,7 @@
                 version: "v2.1.8-h3i4j55",
                 status: "running",
                 environment: "cci-prod-b",
-                timestamp: "2025-03-20 02:52:38",
+                timestamp: "2025-03-19T23:52:38Z",
                 duration: "1m 45s",
                 commitMessage: "Scale WebSocket connections with Redis cluster backend",
                 author: "christopher.lopez",
@@ -788,7 +788,7 @@
                 version: "v1.7.9-i4j5k66",
                 status: "success",
                 environment: "cci-prod-a",
-                timestamp: "2025-03-20 02:50:21",
+                timestamp: "2025-03-20T06:50:21Z",
                 duration: "5m 16s",
                 commitMessage: "Optimize image compression with WebP and AVIF support",
                 author: "samantha.white",
@@ -802,7 +802,7 @@
                 version: "v1.3.5-j5k6l77",
                 status: "failed",
                 environment: "cci-staging",
-                timestamp: "2025-03-20 02:48:44",
+                timestamp: "2025-03-18T13:48:44Z",
                 duration: "2m 09s",
                 commitMessage: "Implement feature flags with gradual rollout capabilities",
                 author: "jonathan.anderson",
@@ -816,7 +816,7 @@
                 version: "v2.2.3-k6l7m88",
                 status: "success",
                 environment: "cci-prod-b",
-                timestamp: "2025-03-20 02:46:57",
+                timestamp: "2025-03-21T05:46:57Z",
                 duration: "12m 33s",
                 commitMessage: "Execute schema migration for user table partitioning",
                 author: "elizabeth.murphy",
@@ -931,7 +931,7 @@
         }
 
         function parseTimeRange(query) {
-            const now = new Date('2025-03-20 03:30:00'); // Mock current time
+            const now = new Date('2025-03-20T03:30:00Z'); // Mock current time
             const queryLower = query.toLowerCase();
 
             // Handle "between HH:MM and HH:MM" format
@@ -966,7 +966,12 @@
             const isoMatch = query.match(/@timestamp:([><=])(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z?)/i);
             if (isoMatch) {
                 const operator = isoMatch[1];
-                const timestamp = new Date(isoMatch[2]);
+                let timestamp = new Date(isoMatch[2]);
+                
+                // Ensure Z suffix for proper parsing
+                if (!isoMatch[2].endsWith('Z') && !isoMatch[2].includes('+') && !isoMatch[2].includes('-', 10)) {
+                    timestamp = new Date(isoMatch[2] + 'Z');
+                }
                 
                 if (operator === '>') {
                     return { start: timestamp, end: null };
@@ -981,24 +986,21 @@
             // Handle simple date format
             const simpleDateMatch = query.match(/@timestamp:=(\d{4}-\d{2}-\d{2})/i);
             if (simpleDateMatch) {
-                const date = new Date(simpleDateMatch[1]);
+                const date = new Date(simpleDateMatch[1] + 'T00:00:00Z');
                 const endDate = new Date(date.getTime() + (24 * 60 * 60 * 1000));
                 return { start: date, end: endDate };
             }
 
             // Handle natural language
             if (queryLower.includes('today')) {
-                const today = new Date(now);
-                today.setHours(0, 0, 0, 0);
-                const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+                const today = new Date('2025-03-20T00:00:00Z');
+                const tomorrow = new Date('2025-03-21T00:00:00Z');
                 return { start: today, end: tomorrow };
             }
 
             if (queryLower.includes('yesterday')) {
-                const yesterday = new Date(now);
-                yesterday.setDate(yesterday.getDate() - 1);
-                yesterday.setHours(0, 0, 0, 0);
-                const today = new Date(yesterday.getTime() + (24 * 60 * 60 * 1000));
+                const yesterday = new Date('2025-03-19T00:00:00Z');
+                const today = new Date('2025-03-20T00:00:00Z');
                 return { start: yesterday, end: today };
             }
 
@@ -1124,7 +1126,7 @@
                         <div class="deploy-status">
                             <span class="status-badge ${deploy.status}">${deploy.status.charAt(0).toUpperCase() + deploy.status.slice(1)}</span>
                             <span class="deploy-time">${timeAgo}</span>
-                            <span class="deploy-timestamp">${deploy.timestamp}</span>
+                            <span class="deploy-timestamp">${formatTimestampUS(deploy.timestamp)}</span>
                             <button class="refresh-button">🔄</button>
                         </div>
                     </div>
@@ -1152,7 +1154,7 @@
         }
 
         function getTimeAgo(timestamp) {
-            const now = new Date('2025-03-20 03:30:00'); // Mock current time
+            const now = new Date('2025-03-20T03:30:00Z'); // Mock current time
             const deployTime = new Date(timestamp);
             const diffMinutes = Math.floor((now - deployTime) / (1000 * 60));
             
@@ -1163,6 +1165,19 @@
             } else {
                 return `${Math.floor(diffMinutes / 1440)}d ago`;
             }
+        }
+
+        function formatTimestampUS(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString('en-US', {
+                month: '2-digit',
+                day: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
         }
 
         function renderDeployments() {
