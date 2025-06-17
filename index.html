@@ -1275,19 +1275,19 @@
         // Initial render
         renderDeployments();
 
-        // Auto-refresh running deployments every 5 seconds
-        setInterval(() => {
-            // Simulate status updates for running deployments
-            deployData.forEach(deploy => {
-                if (deploy.status === 'running') {
-                    const rand = Math.random();
-                    if (rand < 0.1) { // 10% chance to complete
-                        deploy.status = rand < 0.08 ? 'success' : 'failed';
-                    }
-                }
-            });
-            renderDeployments();
-        }, 5000);
+        // Auto-refresh running deployments every 5 seconds (disabled for demo)
+        // setInterval(() => {
+        //     // Simulate status updates for running deployments
+        //     deployData.forEach(deploy => {
+        //         if (deploy.status === 'running') {
+        //             const rand = Math.random();
+        //             if (rand < 0.1) { // 10% chance to complete
+        //                 deploy.status = rand < 0.08 ? 'success' : 'failed';
+        //             }
+        //         }
+        //     });
+        //     renderDeployments();
+        // }, 5000);
     </script>
 </body>
 </html>
